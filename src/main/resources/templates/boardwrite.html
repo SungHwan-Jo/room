@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <title>Data Room</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <link rel="stylesheet" href="/css/board.css"/>
+    <script src="/script/boardWrite.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img src="/images/jerry.png" alt="Avatar Logo" style="width:40px;" class="rounded-pill">
+        </a>
+        <div class="collapse navbar-collapse" id="mynavbar">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item" style="color: white; font-size: 40px; font-family: serif;">
+                    자료실
+                </li>
+            </ul>
+            <span th:if="${islogin == 'false'}">
+                <form class="d-flex" action="/login" method="post">
+                    <input class="form-control me-2" type="text" placeholder="아이디" id="content_id" name="content_id">
+                    <input class="form-control me-2" type="password" placeholder="비밀번호" id="content_pwd" name="content_pwd">
+                    <button class="btn btn-primary" type="submit">Login</button>
+                </form>
+            </span>
+            <span th:if="${islogin == 'true'}" th:text="${memberid}" style="color: white">
+            </span>
+        </div>
+    </div>
+</nav>
+<div class="row">
+    <div class="side"></div>
+    <div class="content">
+        <form action="/fileupload" enctype="multipart/form-data" method="post">
+            <div class="mb-3 mt-3">
+                <label for="kind">종  류</label>
+                <select class="form-select" name="kind" id="kind">
+                    <option>Apache</option>
+                    <option>WebtoB</option>
+                    <option>Nginx</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label>파일첨부</label>
+                <input id="fileInput" name="fileInput" filestyle="" type="file" data-class-button="btn btn-default" data-class-input="form-control" data-button-text="" data-icon-name="fa fa-upload" class="form-control" tabindex="-1" style="position: absolute; clip: rect(0px 0px 0px 0px);">
+                <div class="bootstrap-filestyle input-group">
+                    <input type="text" id="userfile" class="form-control" name="userfile" disabled="">
+                    <span class="group-span-filestyle input-group-btn" tabindex="0" style="background-color: gray;">
+                        <label for="fileInput" class="btn btn-default">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16">
+                                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
+                                <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/>
+                            </svg>
+                        </label>
+                    </span>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="contents">파일설명</label>
+                <input type="text" class="form-control" id="contents" placeholder="Enter Contents" name="contents">
+            </div>
+            <button type="button" class="btn btn-primary" style="float: right;" onclick="location.href = '/main'">Cancel</button>
+            <button type="submit" class="btn btn-primary" style="float: right; margin-right: 5px;">Submit</button>
+        </form>
+    </div>
+    <div class="side"></div>
+</div>
+
+</body>
+</html>

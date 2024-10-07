@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>게시판</title>
+    <script src="/script/board.js"></script>
+</head>
+<body>
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th scope="col"></th>
+    <th scope="col">순번</th>
+    <th scope="col">파일 이름</th>
+    <th scope="col">설명</th>
+    <th scope="col">생성 날짜</th>
+
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="boardList, boardListStat: ${boardList}">
+    <td><input type="checkbox" name="board_check" class="board_check" th:value="${boardList.board_num}"></td>
+    <td th:text="${boardListStat.index} + 1"></td>
+    <td th:text="${boardList.board_title}"></td>
+    <td th:text="${boardList.board_content}"></td>
+    <td th:text="${boardList.board_date}"></td>
+  </tr>
+  </tbody>
+</table>
+<span th:if="${islogin == 'true'}" style="float: right;"><button class="btn btn-primary" type="button" onclick="boardDelete();">삭  제</button></span>
+<span th:if="${islogin == 'true'}" style="float: right; margin-right: 5px;"><button class="btn btn-primary" type="button" onclick="location.href='/boardWrite'">등  록</button></span>
+
+
+</body>
+</html>

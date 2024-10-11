@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -61,9 +62,14 @@ public class BoardService {
         return saveBoard;
 
     }
-    public List<Board> getBoardList(String kind){
-        List<Board> boardList = boardRepository.findByKind(kind);
+    public List<Board> getBoardList(String kind, String searchVal, int start, int end){
+        List<Board> boardList = boardRepository.findByKind(kind, searchVal, start, end);
         return boardList;
+    }
+
+    public int getBoardCount(String kind, String searchVal){
+        int result = boardRepository.totalCount(kind, searchVal);
+        return result;
     }
 
     @Transactional

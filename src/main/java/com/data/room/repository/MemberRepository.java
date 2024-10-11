@@ -25,6 +25,9 @@ public class MemberRepository {
 
     public Member findById(String id){
         Member member = em.createQuery("select m from Member m where m.member_id = :id", Member.class).setParameter("id", id).getSingleResult();
+        if(member == null){
+            logger.error("[MemberRepository] [findById] 아이디로 회원 조회 실패");
+        }
         return member;
     }
 

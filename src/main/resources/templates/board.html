@@ -6,6 +6,13 @@
     <script src="/script/board.js"></script>
 </head>
 <body>
+<form th:action th:object="${form}" method="get">
+  <div class="input-group">
+    <input type="text" name="searchVal" th:value="${searchVal}" class="form-control" placeholder="제목을 검색하세요">
+    <button type="submit" class="btn btn-secondary">검색</button>
+  </div>
+
+</form>
 <table class="table table-hover">
   <thead>
   <tr>
@@ -29,7 +36,19 @@
 </table>
 <span th:if="${islogin == 'true'}" style="float: right;"><button class="btn btn-primary" type="button" onclick="boardDelete();">삭  제</button></span>
 <span th:if="${islogin == 'true'}" style="float: right; margin-right: 5px;"><button class="btn btn-primary" type="button" onclick="location.href='/boardWrite'">등  록</button></span>
-
+<br>
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    <li class="page-item">
+      <a class="page-link" th:if="${pageNum >= 2}" th:href="@{${path}(page=${pageNum - 2})}">Previous</a>
+    </li>
+    <li class="page-item" th:each="num : ${#numbers.sequence(startPage, endPage)}" th:class="${num == pageNum} ? 'active'">
+      <a class="page-link" th:href="@{${path}(page=${num-1})}" th:text="${num}"></a></li>
+    <li class="page-item">
+      <a class="page-link" th:if="${pageNum < pageCount}" th:href="@{${path}(page=${pageNum})}">Next</a>
+    </li>
+  </ul>
+</nav>
 
 </body>
 </html>

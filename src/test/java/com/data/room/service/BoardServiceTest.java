@@ -14,7 +14,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@Transactional
 class BoardServiceTest {
     @Autowired
     BoardRepository boardRepository;
@@ -26,15 +25,23 @@ class BoardServiceTest {
 
     @Test
     void saveBoardInfo() {
-        Board board = new Board();
-        board.setBoard_num(1);
-        board.setBoard_kind("Apache");
-        board.setBoard_title("apache_소개_20240923.pptx");
-        board.setBoard_content("Apache 소개 자료");
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
-        board.setBoard_date(simpleDateFormat.format(System.currentTimeMillis()));
-        Board saveBoard = boardRepository.save(board);
-        assertThat(saveBoard).isEqualTo(board);
+        for(int i=1; i <= 50; i ++){
+            Board board = new Board();
+            board.setBoard_kind("Apache");
+            board.setBoard_title("apache_소개_20240923.pptx" + String.valueOf(i));
+            board.setBoard_content("Apache 소개 자료" + String.valueOf(i));
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+            board.setBoard_date(simpleDateFormat.format(System.currentTimeMillis()));
+            boardRepository.save(board);
+        }
+//        Board board = new Board();
+//        board.setBoard_kind("Apache");
+//        board.setBoard_title("apache_소개_20240923.pptx");
+//        board.setBoard_content("Apache 소개 자료");
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+//        board.setBoard_date(simpleDateFormat.format(System.currentTimeMillis()));
+//        Board saveBoard = boardRepository.save(board);
+        //assertThat(saveBoard).isEqualTo(board);
 
     }
 }

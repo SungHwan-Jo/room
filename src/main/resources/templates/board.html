@@ -28,7 +28,7 @@
   <tr th:each="boardList, boardListStat: ${boardList}">
     <td><input type="checkbox" name="board_check" class="board_check" th:value="${boardList.board_num}"></td>
     <td th:text="${boardListStat.index} + 1"></td>
-    <td th:text="${boardList.board_title}"></td>
+    <td><a th:href="@{/download(boardId=${boardList.board_num})}" th:text="${boardList.board_title}"></a></td>
     <td th:text="${boardList.board_content}"></td>
     <td th:text="${boardList.board_date}"></td>
   </tr>

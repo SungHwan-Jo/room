@@ -15,10 +15,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -39,15 +39,20 @@ public class BoardService {
     public void uploadFile(MultipartFile file, String kind){
         String originalFileName = file.getOriginalFilename();
         //NAS Storage upload
+
         try{
+            File uploadFile = new File(uploadDirectory);
+            if(!uploadFile.exists()){
+                uploadFile.mkdir();
+            }
             File directory = new File(uploadDirectory + kind);
             //File Directory 존재 여부 확인
             if(!directory.exists()){
                 directory.mkdir(); //Folder 생성
-                File savefile = new File(uploadDirectory + kind + "\\" + originalFileName);
+                File savefile = new File(uploadDirectory + kind + "/" + originalFileName);
                 file.transferTo(savefile);
             }else{
-                File savefile = new File(uploadDirectory + kind + "\\" + originalFileName);
+                File savefile = new File(uploadDirectory + kind + "/" + originalFileName);
                 file.transferTo(savefile);
             }
 
@@ -79,13 +84,63 @@ public class BoardService {
 
     public void deleteFile(int board_num){
         Board deleteBoard = boardRepository.findById(board_num);
-        File deletefile = new File(uploadDirectory + deleteBoard.getBoard_kind() + "\\" + deleteBoard.getBoard_title());
+        File deletefile = new File(uploadDirectory + deleteBoard.getBoard_kind() + "/" + deleteBoard.getBoard_title());
         if(deletefile.exists()){
             deletefile.delete();
         }else{
             logger.info("[BoardService] [deleteFile]: 파일이 존재하지 않습니다." );
         }
 
+    }
+
+    public void downloadFile(HttpServletResponse response, int board_num){
+        Board downloadBoard = boardRepository.findById(board_num);
+        String encodingFile = null;
+        //response header에 한글 파일인경우 encoding 필요
+        try {
+            encodingFile = URLEncoder.encode(downloadBoard.getBoard_title(), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+
+        String filePath = uploadDirectory + downloadBoard.getBoard_kind() + "/" + downloadBoard.getBoard_title();
+
+        System.out.println("File Path : " + filePath);
+        File file = new File(filePath);
+        //페이지의 ContentType 초기화를 위한 Reset
+        response.reset();
+
+        //인코딩 변경
+        response.setHeader("Content-Disposition", "attachment;filename=" + encodingFile);
+        //size 설정
+        response.setContentLength((int)file.length());
+        System.out.println("System TEST " + (int)file.length());
+        //임시 버퍼
+        byte[] data = new byte[(int)file.length()];
+        //file inputstream 생성
+        BufferedInputStream fis = null;
+        BufferedOutputStream fos = null;
+
+        try{
+            fis = new BufferedInputStream(new FileInputStream(file));
+            fos = new BufferedOutputStream(response.getOutputStream());
+
+            int count = 0;
+            while((count = fis.read(data)) != -1){
+                fos.write(data);
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                fis.close();
+                fos.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
 }

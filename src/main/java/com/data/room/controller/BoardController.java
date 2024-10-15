@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -101,7 +102,7 @@ public class BoardController {
         int Gtotal = boardService.getBoardCount("Nginx", searchVal);
         //총 페이지 개수 계산
         if(Gtotal%10==0){
-            pageCount = Gtotal/10;
+            pageCount = Gtotal/10  + 1;
         }else{
             pageCount = (Gtotal/10) + 1;
         }
@@ -155,7 +156,7 @@ public class BoardController {
         int Gtotal = boardService.getBoardCount("WebtoB", searchVal);
         //총 페이지 개수 계산
         if(Gtotal%10==0){
-            pageCount = Gtotal/10;
+            pageCount = Gtotal/10  + 1;
         }else{
             pageCount = (Gtotal/10) + 1;
         }
@@ -209,7 +210,7 @@ public class BoardController {
         int Gtotal = boardService.getBoardCount("Patch", searchVal);
         //총 페이지 개수 계산
         if(Gtotal%10==0){
-            pageCount = Gtotal/10;
+            pageCount = Gtotal/10  + 1;
         }else{
             pageCount = (Gtotal/10) + 1;
         }
@@ -307,6 +308,11 @@ public class BoardController {
         String referer = request.getHeader("Referer");
         return "redirect:"+ referer;
 
+    }
 
+    @GetMapping("/download")
+    public void boardDownload(HttpServletRequest request, HttpServletResponse response){
+        int board_num = Integer.parseInt(request.getParameter("boardId"));
+        boardService.downloadFile(response, board_num);
     }
 }

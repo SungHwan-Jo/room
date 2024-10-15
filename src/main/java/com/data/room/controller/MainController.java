@@ -57,7 +57,7 @@ public class MainController {
         int Gtotal = boardService.getBoardCount("Apache", searchVal);
         //총 페이지 개수 계산
         if(Gtotal%10==0){
-            pageCount = Gtotal/10;
+            pageCount = Gtotal/10 + 1;
         }else{
             pageCount = (Gtotal/10) + 1;
         }
@@ -70,7 +70,6 @@ public class MainController {
         if(endPage > pageCount) {
             endPage = pageCount;
         }
-
 
         HttpSession session = request.getSession();
         if(session.getAttribute("member") == null){

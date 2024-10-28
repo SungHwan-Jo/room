@@ -41,12 +41,12 @@
         <hr>
         <ul class="nav nav-pills flex-column mb-auto">
             <li class="nav-item" th:each="productList : ${productList}">
-                <a th:href="@{${productList.product_kind}}" th:unless="${productList.product_kind == 'Patch'}" class="nav-link text-white" aria-current="page" th:text="${productList.product_kind}">
+                <a th:href="@{${productList.product_kind}}" th:unless="${productList.product_kind == 'Patch'}" class="nav-link text-white" aria-current="page" th:text="${productList.product_kind}" th:classappend="${productList.product_kind == current_product} ? 'active'">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
                     </svg>
                 </a>
-                <a th:href="@{${productList.product_kind}}" class="nav-link text-white" aria-current="page" th:if="${islogin == 'true'} and ${productList.product_kind == 'Patch'}" th:text="${productList.product_kind}">
+                <a th:href="@{${productList.product_kind}}" class="nav-link text-white" aria-current="page" th:if="${islogin == 'true'} and ${productList.product_kind == 'Patch'}" th:text="${productList.product_kind}" th:classappend="${productList.product_kind == current_product} ? 'active'">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
                     </svg>

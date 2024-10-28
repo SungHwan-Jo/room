@@ -37,10 +37,11 @@ public class BoardService {
 
     //File upload 서비스
     public void uploadFile(MultipartFile file, String kind){
-        String originalFileName = file.getOriginalFilename();
-        //NAS Storage upload
+        String originalFileName = null;
 
+        //NAS Storage upload
         try{
+            originalFileName = file.getOriginalFilename();
             File uploadFile = new File(uploadDirectory);
             if(!uploadFile.exists()){
                 uploadFile.mkdir();

@@ -8,6 +8,7 @@ import com.data.room.service.MemberService;
 import com.data.room.service.ProductService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,18 +21,20 @@ import java.util.List;
 
 @Controller
 public class MainController {
+    @Value("${lotto_service_url}")
+    private String lotto_service_url;
     private final MemberService memberService;
-    private final BoardService boardService;
     private final ProductService productService;
+    private final BoardService boardService;
 
     //MainController Log 설정
     //Log Format [MainController] [Function Name]: Message
     private final static Logger logger = LogManager.getLogger(MainController.class);
 
-    public MainController(MemberService memberService, BoardService boardService, ProductService productService) {
+    public MainController(MemberService memberService, ProductService productService, BoardService boardService) {
         this.memberService = memberService;
-        this.boardService = boardService;
         this.productService = productService;
+        this.boardService = boardService;
     }
 
     @GetMapping("/")
@@ -39,7 +42,7 @@ public class MainController {
         return "redirect:/main";
     }
     @GetMapping("/main")
-    public String main(Model model, HttpServletRequest request, @RequestParam(value="searchVal", required = false) String searchVal){
+    public String main(Model model, HttpServletRequest request, @RequestParam(value="searchVal", required = false) String searchVal) {
         //검색어 처리
         if(searchVal == null){
             searchVal = "%%";
@@ -90,6 +93,10 @@ public class MainController {
         //LNB 제품 리스트 조회
         List<Product> productList = productService.getProductList();
         model.addAttribute("productList", productList);
+
+        //Lotto URL 추가
+        model.addAttribute("lotto_service_url", lotto_service_url);
+
         return "main";
     }
 
@@ -103,6 +110,7 @@ public class MainController {
             return "alert";
         }
         Member member = memberService.memberCheck(id);
+
         if (member == null){
             model.addAttribute("message","아이디, 비밀번호를 확인하세요");
             model.addAttribute("searchUrl","/main");

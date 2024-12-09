@@ -32,6 +32,7 @@
             </span>
             <span th:if="${islogin == 'true'}" th:text="${memberid}" style="color: white">
             </span>
+            <button class="btn btn-outline-info" type="button" th:onclick="|location.href='@{${lotto_service_url}}'|">Lotto</button>
         </div>
     </div>
 </nav>
@@ -55,7 +56,6 @@
         </ul>
     </div>
     <div id="content_table2" th:insert="board" style="width: 60%; height: 800; margin-top: 200px; margin-left: 100px; float: left;">
-
     </div>
 </div>
 
